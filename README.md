@@ -106,7 +106,7 @@ Los pesos de la tabla anterior son una decisión del equipo. Para comprobar que 
 
 ## Qué se obtiene
 
-En la carpeta `resultados/`:
+En la carpeta `resultados/`, que se crea al ejecutar el notebook (no está en GitHub; ver [por qué](#por-qué-no-están-en-github-los-datos-del-pot-ni-los-resultados)):
 
 | Archivo | Qué es |
 |---|---|
@@ -143,7 +143,18 @@ Ciudad-Incremental-analisis-de-transporte/
 └── resultados/                                    # Mapas, tabla y capas para QGIS (se crea sola)
 ```
 
-Solo el notebook, la documentación y las figuras están en GitHub. Todo lo demás se descarga o se calcula al ejecutar el notebook.
+### ¿Por qué no están en GitHub los datos del POT ni los resultados?
+
+Solo el notebook, la documentación y las figuras están en GitHub. El resto de carpetas se dejan por fuera **a propósito** (están en el `.gitignore`), porque se pueden recuperar ejecutando el notebook:
+
+| Carpeta | Peso aproximado | Por qué no se sube | Cómo obtenerla |
+|---|---|---|---|
+| `datos/output_be.tif` | 230 MB | GitHub no acepta archivos de más de 100 MB | Ponerlo a mano (ver `datos/LEEME.md`) |
+| `datos/pot/` | 140 MB en 14 capas (solo `retiros_rios_quebradas.geojson` pesa 59 MB) | Son datos públicos de la Alcaldía; al descargarlos cada vez se usa su versión más reciente | Se descargan solos en el paso 0 del notebook |
+| `datos/cache/` y `cache/` | 150 MB | Son copias intermedias (recorte del mapa de alturas, pendientes, red de calles y respuestas de OpenStreetMap) | Se crean solas la primera vez |
+| `resultados/` | 37 MB | Cambian cada vez que se ajustan los parámetros o se actualizan los datos | Se crean al ejecutar el notebook hasta el final |
+
+Las figuras de este README (carpeta `Images/`) sí están en el repositorio, para que se pueda ver el resultado sin ejecutar nada.
 
 ---
 
