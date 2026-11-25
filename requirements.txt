@@ -1,0 +1,13 @@
+osmnx>=2.0
+geopandas>=1.0
+networkx>=3.0
+numpy
+pandas
+shapely>=2.0
+rasterio
+scipy
+requests
+matplotlib
+folium
+mapclassify
+jupyter

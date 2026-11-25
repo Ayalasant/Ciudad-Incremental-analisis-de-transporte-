@@ -1,0 +1,21 @@
+# Mapa de alturas: pesa demasiado para GitHub (ver datos/LEEME.md)
+datos/*.tif
+datos/*.tiff
+*.tif.aux.xml
+
+# Archivos que el notebook descarga o calcula solo
+datos/cache/
+datos/pot/
+cache/
+resultados/
+*.tmp.tif
+
+# Archivos temporales de Jupyter y Python
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
