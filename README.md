@@ -4,6 +4,14 @@
 
 Este repositorio es el componente de transporte de **Ciudad Incremental: Infraestructura de riesgo, redes y vivienda para el reordenamiento territorial**, propuesta del frente de trabajo *Infraestructura para un país de ciudades* del Consejo de Jóvenes de la Cámara Colombiana de la Infraestructura (CCI), con la Universidad EAFIT.
 
+<p align="center">
+  <img src="Images/08_sitios_propuestos.png" alt="Mapa de Medellín con los barrios en riesgo en naranja y los sitios propuestos para reubicar a sus familias, coloreados según su nota" width="720">
+  <br>
+  <em>Resultado: los barrios en riesgo (naranja) y los sitios propuestos para cada uno, coloreados según su nota. La línea punteada une cada barrio con su sitio.</em>
+</p>
+
+**Contenido:** [La historia detrás](#la-historia-detrás) · [Cómo funciona](#cómo-funciona-paso-a-paso) · [Qué se obtiene](#qué-se-obtiene) · [Estructura del repositorio](#estructura-del-repositorio) · [Cómo usarlo](#cómo-usarlo) · [Datos](#de-dónde-salen-los-datos) · [Limitaciones](#lo-que-hay-que-tener-en-cuenta)
+
 ---
 
 ## La historia detrás
@@ -33,22 +41,46 @@ Imagina que tienes que ayudar a una familia a escoger un nuevo hogar. Harías m�
 ### 1. Conocer el terreno
 Se usa un **mapa de alturas** de la ciudad para saber qué tan empinado es cada lugar. En Medellín esto importa mucho: no es lo mismo caminar 500 metros en plano que 500 metros subiendo una loma.
 
+![Altura y pendiente de Medellín y sus alrededores](Images/02_pendiente.png)
+*Izquierda: altura sobre el nivel del mar. Derecha: pendiente. El valle es casi plano; las laderas oriental y occidental superan con facilidad el 30 %.*
+
 ### 2. Conocer las calles
 Se descarga el mapa de todas las calles, andenes, senderos y escaleras de Medellín (de **OpenStreetMap**, un mapa libre hecho por voluntarios). Para cada tramo se calcula **cuánto se tarda una persona en recorrerlo**: en plano se camina a unos 5 km/h; subiendo una pendiente fuerte, a menos de la mitad.
 
 ### 3. Ubicar lo que la familia necesita cerca
 Se ubican en el mapa las **estaciones del metro, metrocable, tranvía y Metroplús**, los **paraderos de bus**, los **centros de salud** y los **colegios**.
 
+![Paraderos, colegios, centros de salud y estaciones del sistema masivo en Medellín](Images/03_destinos.png)
+*3.667 paraderos, 998 colegios, 507 centros de salud y 77 estaciones del sistema masivo.*
+
 ### 4. Medir los minutos caminando
 Para cada esquina de la ciudad se calcula **cuántos minutos se tarda en llegar caminando** a la estación, al paradero, al centro de salud y al colegio más cercanos, siempre por las calles y teniendo en cuenta las subidas.
 
 Una forma de imaginarlo: se deja caer una gota de tinta en cada estación y la tinta avanza por las calles a la velocidad de una persona caminando. Cada esquina queda marcada con el minuto en que le llegó la tinta.
 
+<p align="center">
+  <img src="Images/04_minutos_caminando.png" alt="Mapa de minutos caminando hasta el sistema masivo: verde cerca de las líneas del metro, rojo en las laderas" width="520">
+  <br>
+  <em>Minutos caminando hasta el metro, cable, tranvía o Metroplús. Verde: menos de 10 minutos. Rojo: 45 o más, sobre todo en las laderas.</em>
+</p>
+
 ### 5. Encontrar los barrios en riesgo
 Con los mapas oficiales de la Alcaldía se ubican las **zonas de alto riesgo no mitigable**, donde la norma obliga a reasentar, y los barrios de origen informal que el plan de ordenamiento marca para **mejoramiento integral**. Para cada barrio se anota **cómo está conectado hoy**: cuántos minutos tiene, en el caso típico, hasta el metro, el bus, la salud y el colegio.
 
+<p align="center">
+  <img src="Images/05_barrios_en_riesgo.png" alt="Barrios en riesgo numerados de T1 a T33, coloreados según los minutos caminando hasta el sistema masivo hoy" width="520">
+  <br>
+  <em>Los territorios en riesgo (T1 a T33), coloreados según cuántos minutos caminan hoy hasta el sistema masivo.</em>
+</p>
+
 ### 6. Descartar lo que no sirve
 Se descarta el terreno donde **no se puede o no se debe construir**: zonas de amenaza alta, áreas protegidas, orillas de quebradas, terrenos demasiado empinados o lugares sin ningún camino cerca.
+
+<p align="center">
+  <img src="Images/06_terreno_descartado.png" alt="Mapa de Medellín en hexágonos que muestra por qué se descarta cada terreno: amenaza alta, POT, pendiente, suelo de protección o sirve" width="560">
+  <br>
+  <em>¿Dónde se puede construir? Cada hexágono muestra la razón por la que se descarta. Solo los de color arena sirven.</em>
+</p>
 
 ### 7. Calificar cada terreno posible
 Cada terreno que queda recibe una nota de 0 a 1 según cinco preguntas:
@@ -60,6 +92,9 @@ Cada terreno que queda recibe una nota de 0 a 1 según cinco preguntas:
 | **¿Queda cerca del barrio?** Para no romper su vida de siempre | 20 % |
 | **¿A cuántos vecinos les sirven esas obras?** Si se construye una escalera o un paradero, también lo usa el barrio de al lado | 20 % |
 | **¿Qué tan empinado es?** Construir en plano es más fácil y barato | 10 % |
+
+![Dos de los cinco criterios en el mapa: qué tan fácil es conectar cada terreno y cuántos vecinos se benefician](Images/07_calificacion.png)
+*Dos de las cinco preguntas en el mapa. Izquierda: qué tan fácil es conectar cada terreno (1 = ya cumple el mínimo). Derecha: a cuántos vecinos en riesgo les sirven las obras.*
 
 ### 8. Proponer los mejores sitios
 Para cada barrio se proponen **los dos mejores sitios**, cada uno con una **ficha** que dice qué obras de transporte hacen falta para que las familias queden bien conectadas desde el primer día.
@@ -80,6 +115,35 @@ En la carpeta `resultados/`:
 | `sitios_por_barrio.csv` | Tabla con cada sitio, su nota y las obras que necesita (se abre en Excel) |
 | `ciudad_incremental_transporte.gpkg` | Todas las capas para revisar en QGIS |
 | `red_y_destinos.gpkg` | La red de calles con los minutos de cada esquina y los destinos, para QGIS |
+
+---
+
+## Estructura del repositorio
+
+```
+Ciudad-Incremental-analisis-de-transporte/
+├── ciudad_incremental_transporte_medellin.ipynb   # El análisis completo, paso a paso
+├── README.md                                      # Este archivo
+├── requirements.txt                               # Librerías de Python
+├── .gitignore                                     # Lo que no se sube (datos pesados y resultados)
+├── Images/                                        # Figuras de este README
+│   ├── 02_pendiente.png
+│   ├── 03_destinos.png
+│   ├── 04_minutos_caminando.png
+│   ├── 05_barrios_en_riesgo.png
+│   ├── 06_terreno_descartado.png
+│   ├── 07_calificacion.png
+│   └── 08_sitios_propuestos.png
+├── datos/
+│   ├── LEEME.md                                   # Qué poner aquí y qué se crea solo
+│   ├── output_be.tif                              # Mapa de alturas: se pone a mano (no está en GitHub)
+│   ├── pot/                                       # Mapas de la Alcaldía (se descargan solos)
+│   └── cache/                                     # Recortes, pendientes y red de calles (se crean solos)
+├── cache/                                         # Respuestas guardadas de OpenStreetMap (se crea sola)
+└── resultados/                                    # Mapas, tabla y capas para QGIS (se crea sola)
+```
+
+Solo el notebook, la documentación y las figuras están en GitHub. Todo lo demás se descarga o se calcula al ejecutar el notebook.
 
 ---
 
